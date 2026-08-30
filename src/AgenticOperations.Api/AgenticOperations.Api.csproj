@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="../AgenticOperations.Application/AgenticOperations.Application.csproj" />
+    <ProjectReference Include="../AgenticOperations.Infrastructure/AgenticOperations.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

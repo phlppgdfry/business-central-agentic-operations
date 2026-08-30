@@ -1,0 +1,10 @@
+{
+  "requestText": "Please order another 40 units of product X for our Antwerp site.",
+  "expected": {
+    "customer": "ANTWERP",
+    "item": "PROD-X",
+    "availableQuantity": 32,
+    "backorderQuantity": 8,
+    "requiresApproval": true
+  }
+}

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../AgenticOperations.Application/AgenticOperations.Application.csproj" />
+    <ProjectReference Include="../AgenticOperations.Domain/AgenticOperations.Domain.csproj" />
+  </ItemGroup>
+</Project>
