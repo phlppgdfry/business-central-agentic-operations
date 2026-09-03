@@ -11,7 +11,7 @@ permissions:
 
 env:
   RESOURCE_GROUP: rg-agentic-operations-dev
-  LOCATION: westeurope
+  LOCATION: swedencentral
   APP_NAME: agenticops
   REGISTRY: agenticopsphilippe2026
 

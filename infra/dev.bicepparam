@@ -1,7 +1,7 @@
 using './main.bicep'
 
 param applicationName = 'agenticops'
-param location = 'westeurope'
+param location = 'swedencentral'
 // Set during deployment; it must be globally unique.
 param containerRegistryName = 'replaceatdeployment'
 param apiImage = 'replaceatdeployment.azurecr.io/api:bootstrap'
