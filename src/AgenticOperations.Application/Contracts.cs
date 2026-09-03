@@ -12,6 +12,6 @@ public interface IBusinessCentralClient
 
 public interface IOrderRequestExtractor { RequestedOrder Extract(string requestText); }
 public interface IAuditTrail { void Append(string correlationId, string eventType, string detail); IReadOnlyList<AuditEvent> ForCorrelation(string correlationId); }
-public interface IProposalRepository { void Save(OrderProposal proposal); OrderProposal? Get(Guid id); }
+public interface IProposalRepository { void Save(OrderProposal proposal); OrderProposal? Get(Guid id); IReadOnlyCollection<OrderProposal> GetAll(); }
 
 public sealed record CreateProposalCommand(string RequestText, string? CorrelationId = null);

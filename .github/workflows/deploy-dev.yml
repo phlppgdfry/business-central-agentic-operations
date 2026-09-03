@@ -1,0 +1,42 @@
+name: Deploy development
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  RESOURCE_GROUP: rg-agentic-operations-dev
+  LOCATION: westeurope
+  APP_NAME: agenticops
+  REGISTRY: agenticopsphilippe2026
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Create resource group
+        run: az group create --name "$RESOURCE_GROUP" --location "$LOCATION"
+      - name: Deploy shared platform
+        run: >-
+          az deployment group create --resource-group "$RESOURCE_GROUP" --template-file infra/main.bicep
+          --parameters containerRegistryName=$REGISTRY apiImage=$REGISTRY.azurecr.io/api:bootstrap dashboardImage=$REGISTRY.azurecr.io/dashboard:bootstrap deployApplications=false
+      - name: Build and push images
+        run: |
+          az acr build --registry "$REGISTRY" --image api:${{ github.sha }} --file src/AgenticOperations.Api/Dockerfile .
+          az acr build --registry "$REGISTRY" --image dashboard:${{ github.sha }} --file src/AgenticOperations.Dashboard/Dockerfile .
+      - name: Deploy applications
+        run: >-
+          az deployment group create --resource-group "$RESOURCE_GROUP" --template-file infra/main.bicep
+          --parameters containerRegistryName=$REGISTRY apiImage=$REGISTRY.azurecr.io/api:${{ github.sha }} dashboardImage=$REGISTRY.azurecr.io/dashboard:${{ github.sha }} deployApplications=true

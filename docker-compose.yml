@@ -1,0 +1,14 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: src/AgenticOperations.Api/Dockerfile
+    ports: ["5057:8080"]
+  dashboard:
+    build:
+      context: .
+      dockerfile: src/AgenticOperations.Dashboard/Dockerfile
+    environment:
+      OperationsApi__BaseUrl: http://api:8080
+    ports: ["5058:8080"]
+    depends_on: [api]

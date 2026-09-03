@@ -1,0 +1,41 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject OperationsApiClient Api
+
+<PageTitle>Operations Command Centre</PageTitle>
+
+<main class="operations-shell">
+    <header class="hero">
+        <div><p class="eyebrow">AGENTIC ERP AUTOMATION</p><h1>Operations Command Centre</h1><p>AI-assisted Business Central order processing — humans remain in control.</p></div>
+        <button class="primary" disabled="@isBusy" @onclick="CreateDemoAsync">@(isBusy ? "Creating…" : "Create demo request")</button>
+    </header>
+
+    @if (!string.IsNullOrEmpty(error)) { <p class="alert">@error</p> }
+    <section class="metrics">
+        <article><span>Pending approval</span><strong>@proposals.Count(p => p.Status == "PendingApproval")</strong></article>
+        <article><span>Approved today</span><strong>@proposals.Count(p => p.Status == "Approved" && p.CreatedAtUtc.Date == DateTimeOffset.UtcNow.Date)</strong></article>
+        <article><span>Backorders flagged</span><strong>@proposals.Count(p => p.Request.Quantity > p.Inventory.AvailableQuantity)</strong></article>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">ORDER INTAKE</p><h2>Proposals</h2></div><span class="muted">@proposals.Count request(s)</span></div>
+        @if (!loaded) { <p class="empty">Loading operations data…</p> }
+        else if (proposals.Count == 0) { <p class="empty">No requests yet. Create the demo request to walk through the approval flow.</p> }
+        else { <div class="proposal-list">@foreach (var proposal in proposals) { <article class="proposal">
+            <div class="proposal-main"><div class="status @proposal.Status.ToLowerInvariant()">@proposal.Status</div><h3>@proposal.Customer.Name</h3><p>@proposal.Item.Description · <strong>@proposal.Request.Quantity units</strong> requested for @proposal.Request.RequestedSite</p><p class="explanation">@proposal.Explanation</p></div>
+            <div class="stock"><span>Available</span><strong>@proposal.Inventory.AvailableQuantity</strong>@if (proposal.Request.Quantity > proposal.Inventory.AvailableQuantity) { <small>@(proposal.Request.Quantity - proposal.Inventory.AvailableQuantity) backorder</small> }</div>
+            <div class="action">@if (proposal.Status == "PendingApproval") { <button class="primary" disabled="@isBusy" @onclick="() => ApproveAsync(proposal.Id)">Approve order</button> } else { <span class="order-number">@proposal.SalesOrder?.Number</span><small>Approved by @proposal.ApprovedBy</small> }</div>
+        </article>}</div> }
+    </section>
+</main>
+
+@code {
+    private List<OrderProposalView> proposals = [];
+    private bool loaded;
+    private bool isBusy;
+    private string? error;
+    protected override async Task OnInitializedAsync() => await LoadAsync();
+    private async Task LoadAsync() { try { proposals = [.. await Api.GetProposalsAsync()]; } catch (Exception ex) { error = $"The operations API is unavailable: {ex.Message}"; } finally { loaded = true; } }
+    private async Task CreateDemoAsync() { isBusy = true; error = null; try { await Api.CreateDemoProposalAsync(); await LoadAsync(); } catch (Exception ex) { error = ex.Message; } finally { isBusy = false; } }
+    private async Task ApproveAsync(Guid id) { isBusy = true; error = null; try { await Api.ApproveAsync(id); await LoadAsync(); } catch (Exception ex) { error = ex.Message; } finally { isBusy = false; } }
+}

@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/AgenticOperations.Api/AgenticOperations.Api.csproj" />
     <Project Path="src/AgenticOperations.Application/AgenticOperations.Application.csproj" />
+    <Project Path="src/AgenticOperations.Dashboard/AgenticOperations.Dashboard.csproj" />
     <Project Path="src/AgenticOperations.Domain/AgenticOperations.Domain.csproj" />
     <Project Path="src/AgenticOperations.Infrastructure/AgenticOperations.Infrastructure.csproj" />
   </Folder>

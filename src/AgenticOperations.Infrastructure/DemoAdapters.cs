@@ -38,6 +38,7 @@ public sealed class InMemoryProposalRepository : IProposalRepository
     private readonly Dictionary<Guid, OrderProposal> _items = new();
     public void Save(OrderProposal proposal) => _items[proposal.Id] = proposal;
     public OrderProposal? Get(Guid id) => _items.GetValueOrDefault(id);
+    public IReadOnlyCollection<OrderProposal> GetAll() => _items.Values.ToArray();
 }
 
 public sealed class HashChainedAuditTrail : IAuditTrail
