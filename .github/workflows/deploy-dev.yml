@@ -1,9 +1,13 @@
 name: Deploy development
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      enable_paid_azure:
+        description: 'Recreate paid Azure resources (recurring charges)'
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   id-token: write
@@ -20,6 +24,7 @@ env:
 
 jobs:
   deploy:
+    if: ${{ inputs.enable_paid_azure == true }}
     runs-on: ubuntu-latest
     environment: development
     steps:

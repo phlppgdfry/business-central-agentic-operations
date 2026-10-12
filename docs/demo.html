@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Business Central Operations — Local Demo</title>
+<style>
+body{margin:0;background:#f4f6fa;color:#17233a;font:17px/1.6 system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:40px 24px}h1{line-height:1.15}p{max-width:850px}.note,section{background:white;padding:24px;border-radius:16px;margin:24px 0}img,video{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #dce2eb}code{background:#e9edf4;padding:3px 6px;border-radius:4px}a{color:#185abe}nav{display:flex;gap:20px;flex-wrap:wrap}
+</style>
+<main>
+<p>LOCAL DEMO · CAPTURED OCTOBER 12, 2026</p>
+<h1>Agentic Business Central Operations</h1>
+<p>A customer request becomes an inventory-aware proposal. A human approves it before the simulated ERP creates the sales order.</p>
+<div class="note"><strong>Run the interactive app:</strong> execute <code>bash scripts/run-local.sh</code> from the repository root and open <a href="http://localhost:5058">localhost:5058</a>. This page is an offline showcase of real screenshots. The application uses seeded, in-memory data and deterministic extraction; no Azure, real ERP or live AI connection is required.</div>
+<nav><a href="#overview">1. Dashboard</a><a href="#proposal">2. Proposal</a><a href="#approval">3. Approval</a><a href="demo.md">Full walkthrough</a></nav>
+<section id="overview"><h2>1. Start with an empty dashboard</h2><p>Pending approvals, approved orders and backorder flags start at zero.</p><img src="screenshots/local-overview.png" alt="Local Operations Command Centre with no requests"></section>
+<section id="proposal"><h2>2. Create a request and review the exception</h2><p>40 units requested, 32 available, 8 on backorder. The proposal awaits explicit approval.</p><img src="screenshots/local-pending-approval.png" alt="Pending proposal for Product X with 8-unit backorder"></section>
+<section id="approval"><h2>3. Approve the simulated sales order</h2><p>Approval produces SO-1001, records the approver and completes the three-event audit trail.</p><img src="screenshots/local-approved-order.png" alt="Approved demo order SO-1001"></section>
+<section><h2>Screenshot tour</h2><p>A 12-second slideshow of the captured states.</p><video controls preload="metadata" poster="screenshots/local-pending-approval.png"><source src="screenshots/local-demo.mp4" type="video/mp4"></video></section>
+<p>Demo records reset when the API restarts. The Azure-hosted demo has been retired; a future cloud deployment is an explicit paid choice.</p>
+</main>
+</html>

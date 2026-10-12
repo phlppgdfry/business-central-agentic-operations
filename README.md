@@ -34,13 +34,29 @@ Customer request → extraction → BC lookup → rules → proposal → human a
 
 ## Run it
 
-Prerequisite: .NET SDK 10.
+The demo runs entirely locally with seeded data: no Azure account, Business Central license, AI API key or paid cloud service is required. The API uses an in-memory Business Central simulator and deterministic request extraction.
+
+Prerequisite: .NET SDK 10 and `curl`.
+
+Start both the API and dashboard from the repository root:
 
 ```bash
-dotnet run --project src/AgenticOperations.Api
+bash scripts/run-local.sh
 ```
 
-Open `http://localhost:5057` or call the demo endpoints:
+Open **http://localhost:5058** and click **Create demo request**, then **Approve order**. Press Ctrl+C in the terminal to stop both services. Proposals, orders, stock and audit events are demo data held in memory and reset when the API restarts.
+
+Alternatively, with Docker running:
+
+```bash
+docker compose up --build
+# Stop and remove the local containers afterwards:
+docker compose down
+```
+
+Docker builds the images locally; it does not use Azure Container Registry. The native .NET path was verified on macOS on October 12, 2026; Docker Compose was reviewed but not run during that verification.
+
+The API is at `http://localhost:5057`. You can also call the demo endpoints:
 
 ```bash
 # Create a proposed order (does not write to Business Central)
@@ -60,6 +76,20 @@ Run verification:
 ```bash
 dotnet run --project tests/AgenticOperations.Tests
 ```
+
+## Demo and screenshots
+
+[Follow the two-minute demo tour](docs/demo.md) or open [the offline screenshot showcase](docs/demo.html). Screenshots below were captured from the working local application on October 12, 2026 using seeded demo data.
+
+![Order proposal with 40 requested units, 32 available and an 8-unit backorder](docs/screenshots/local-pending-approval.png)
+
+![Approved demo sales order SO-1001](docs/screenshots/local-approved-order.png)
+
+## Cloud deployment and costs
+
+Local development is the default. Azure deployment is **manual only**, with a default-off `enable_paid_azure` checkbox in GitHub Actions. Normal pushes and CI do not create Azure resources.
+
+The former Azure demo used a Basic Container Registry with recurring daily charges, even when the apps were idle. See [the Azure retirement record](docs/azure-retirement.md). Existing charges remain payable; local execution has no Azure service charges. Azure infrastructure remains in `infra/` for a deliberate future redeployment, which will start recurring cloud charges again.
 
 ## Demo data
 
