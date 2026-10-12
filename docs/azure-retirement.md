@@ -15,7 +15,7 @@ Resource group: `rg-agentic-operations-dev` (Azure subscription ending `5515`).
 | `agenticops-logs` | Log Analytics workspace |
 | `agenticops-identity` | User-assigned identity for image pulls |
 
-The Basic registry generated recurring charges even while the demo was idle. Stopping only the container apps would leave registry charges running. The project resource group is therefore being removed after local verification; other Azure projects and subscriptions are outside this cleanup.
+The Basic registry generated recurring charges even while the demo was idle. Stopping only the container apps would leave registry charges running. Removal of the project resource group was requested after local verification; other Azure projects and subscriptions are outside this cleanup.
 
 ## Preserved alternative
 
@@ -31,4 +31,10 @@ Already accrued charges and outstanding invoices remain payable. Removing this p
 
 ## Cleanup verification
 
-Pending execution after preservation and local verification. This record will be updated with the actual Azure result.
+On October 12, 2026, after commit `b425921` was pushed and GitHub CI passed, `az group delete --subscription …5515 --name rg-agentic-operations-dev --yes --no-wait` was accepted.
+
+Subsequent resource inventory confirmed removal of the registry, API, dashboard, workspace and identity. This removes the identified recurring registry cost source and the two running applications.
+
+Azure's final environment cleanup was still asynchronous at the last check: only `agenticops-aca` remained, with `provisioningState: ScheduledForDelete`, no deployment errors and a Consumption workload profile. The resource group was `Deleting`. This is not a claim that full resource-group deletion was already complete.
+
+Local verification passed: Release build (zero warnings/errors), existing end-to-end checks, browser create/approve workflow (`SO-1001`, eight-unit backorder), three audit events and browser console with zero warnings/errors. Offline showcase verification loaded all three screenshots and its 12-second video. Docker and mobile layouts were not tested.
