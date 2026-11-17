@@ -1,5 +1,11 @@
 # Agentic Business Central Operations Platform
 
+<!-- showcase:start -->
+> **[▶ Try the order flow live](https://phlppgdfry.github.io/business-central-agentic-operations/)** — turn a customer e-mail into a Business Central proposal, approve it, then tamper with the audit chain and watch verification fail. It runs in your browser with the same rules as the C# code.
+
+[![Try the order flow live: business-central-agentic-operations](site/demo.png)](https://phlppgdfry.github.io/business-central-agentic-operations/)
+<!-- showcase:end -->
+
 An AI-assisted ERP workflow showing how **Dynamics 365 Business Central**, **.NET 10**, and an agentic decision layer can streamline customer-order intake while retaining human control over every ERP mutation.
 
 > Portfolio project for hybrid ERP / Business Central / AI consultancy roles. It deliberately uses a seeded Business Central adapter by default, so the entire workflow can be demonstrated without representing sandbox work as production experience.

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BC Agentic Operations — AI-assisted Business Central order intake, with a person approving every ERP change</title>
+<meta name="description" content="A .NET 10 workflow that turns a free-text customer e-mail into a Business Central order proposal: extraction, lookup, inventory rules, explicit approval and a hash-chained audit trail. Try the flow live in your browser.">
+<link rel="canonical" href="https://phlppgdfry.github.io/business-central-agentic-operations/">
+<meta property="og:type" content="website"><meta property="og:title" content="BC Agentic Operations — AI-assisted Business Central order intake, with a person approving every ERP change"><meta property="og:description" content="A .NET 10 workflow that turns a free-text customer e-mail into a Business Central order proposal: extraction, lookup, inventory rules, explicit approval and a hash-chained audit trail. Try the flow live in your browser.">
+<meta property="og:url" content="https://phlppgdfry.github.io/business-central-agentic-operations/"><meta property="og:image" content="https://phlppgdfry.github.io/business-central-agentic-operations/og.jpg"><meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0d12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2322c55e'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/showcase.css">
+<style>:root{--brand:#22c55e;--accent-ink:#03140a}
+.bc-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.bc-grid>*{min-width:0}
+@media (max-width:900px){.bc-grid{grid-template-columns:1fr}}
+.bc-row{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.bc-row input{flex:1;min-width:160px}
+.bc-sm{padding:7px 11px;font-size:13px}
+.bc-pipe{display:grid;gap:8px;margin-top:16px}
+.bc-step{display:grid;grid-template-columns:30px 1fr;gap:10px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.bc-step.hl{border-color:var(--accent)}
+.bc-step.bad{border-color:color-mix(in srgb,var(--bad) 55%,var(--line));background:color-mix(in srgb,var(--bad) 8%,var(--bg2))}
+.bc-step code{font-size:12px;overflow-wrap:anywhere}
+.bc-n{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);font:600 13px var(--mono)}
+.bc-step.bad .bc-n{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.bc-stock{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.bc-props{display:grid;gap:8px}
+.bc-prop{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px}
+.bc-ph{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
+.bc-so{margin-top:8px;font-size:14px;color:var(--ok)}
+.bc-audit-h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.bc-audit{list-style:none;margin:6px 0 0;padding:0;max-height:240px;overflow:auto}
+.bc-audit li{border-top:1px solid var(--line);padding:8px 0;font-size:14px}
+.bc-hash{font-size:11px;color:var(--dim);overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap">
+  <a class="brand" href="#"><i class="dot"></i><span>BC Agentic Operations</span></a>
+  <nav><a class="" href="#demo">Try it</a><a class="" href="#how">How it works</a><a class="hide-sm" href="#screens">Screens</a><a class="hide-sm" href="#run">Run it</a><a href="https://github.com/phlppgdfry/business-central-agentic-operations" aria-label="GitHub repository">GitHub</a><button class="theme" type="button" aria-label="Toggle light or dark theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button></nav>
+</div></div>
+<main>
+<header class="hero"><div class="wrap grid">
+  <div>
+    <div class="kicker"><span>Dynamics 365 Business Central · .NET 10 · agentic ERP</span><span class="chip status">Prototype</span></div>
+    <h1>From a customer e-mail to a sales order, <em>with a person in between</em>.</h1>
+    <p class="lede">A customer writes "please order another 40 units of product X for our Antwerp site". The platform extracts the order, looks up customer, item and stock through a Business Central client, applies the backorder rules and creates a proposal. Only an explicit approval creates the sales order, and every step lands in a tamper-evident audit trail.</p>
+    <div class="ctas"><a class="btn primary" href="#demo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Try the order flow</a><a class="btn" href="https://github.com/phlppgdfry/business-central-agentic-operations"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg> Source on GitHub</a></div>
+    <div class="stack"><span class="chip">.NET 10</span><span class="chip">ASP.NET Core API</span><span class="chip">Blazor dashboard</span><span class="chip">Business Central API seam</span><span class="chip">SHA-256 audit chain</span><span class="chip">Azure Container Apps (retired)</span></div>
+  </div>
+  <div class="hero-visual"><div class="frame"><div class="bar"><i></i><i></i><i></i><b>localhost:5058 · Operations Command Centre</b></div><img src="img/business-central-agentic-operations-shots-pending.webp" alt="BC Agentic Operations" width="1600" height="1000"></div><div class="caption">The real Blazor dashboard with a proposal waiting for approval: 40 requested, 32 in stock, 8 on backorder.</div></div>
+</div></header>
+<section id="why"><div class="wrap">
+  <p class="eyebrow">Why it exists</p><h2>Letting an AI agent write into the ERP is easy. Letting it guess is the problem.</h2>
+  <div class="problem">
+    <div class="card before"><div class="label">Without it</div><p>Order e-mails are retyped by hand, or an automation pushes them straight into the ERP. When it misreads a product or a number, the wrong sales order exists before anyone notices, and nobody can prove afterwards what was decided and by whom.</p></div>
+    <div class="card after"><div class="label">With it</div><p>The agent prepares, a person decides. Requests the system cannot read with certainty are refused with a reason instead of guessed. Stock and backorders are explained up front, and each step is a hash-linked audit event that breaks visibly if anyone edits it.</p></div>
+  </div>
+</div></section>
+<section id="demo"><div class="wrap">
+  <p class="eyebrow">Try it · runs in your browser</p><h2>Send a request through the whole flow</h2>
+  <p class="sub">This runs a JavaScript port of the extractor, the Business Central demo adapter, the proposal rules and the hash-chained audit trail. Both versions answer a shared set of cases in CI. Create a proposal, approve it, then edit an audit event and verify the chain.</p>
+  <div class="demo"><div class="tabs" id="bc-presets"></div>
+<div class="bc-grid">
+  <div>
+    <label for="bc-req">Customer e-mail</label>
+    <textarea id="bc-req" style="min-height:96px"></textarea>
+    <div class="bc-row"><button type="button" class="btn primary" id="bc-create">Create proposal</button><span class="small dim">No ERP change happens here.</span></div>
+    <div id="bc-pipe" class="bc-pipe"></div>
+  </div>
+  <div>
+    <div class="bc-stock" id="bc-stock"></div>
+    <div id="bc-proposals" class="bc-props"></div>
+    <div class="bc-audit-h"><span class="small dim">Audit trail · SHA-256 hash chain</span><span><button type="button" class="btn bc-sm" id="bc-verify">Verify chain</button> <button type="button" class="btn bc-sm" id="bc-tamper">Tamper with an event</button></span></div>
+    <div id="bc-verdict"></div>
+    <ol id="bc-audit" class="bc-audit"></ol>
+  </div>
+</div>
+</div>
+  <p class="note">Stock and sales orders are simulated in your browser and reset on reload. Hashes are real SHA-256, computed with the Web Crypto API.</p>
+</div></section>
+<section id="how"><div class="wrap">
+  <p class="eyebrow">How it works</p><h2>Clean layers, one deliberate gate</h2>
+  
+  <div class="cards"><div class="card"><div class="ic">01</div><h3>A Business Central boundary</h3><p><code>IBusinessCentralClient</code> hides the ERP. The demo uses a seeded in-memory adapter; the production seam targets the Business Central API without changing the workflow.</p></div><div class="card"><div class="ic">02</div><h3>Refuse instead of guess</h3><p>Unknown or multiple products, unknown sites, zero or absurd quantities return HTTP 400 with the reason. A quantity next to a unit wins over other numbers in the text.</p></div><div class="card"><div class="ic">03</div><h3>Proposal, then approval</h3><p>Proposals start as Pending approval. Approval is serialised, so a double click or two reviewers at once still create exactly one sales order.</p></div><div class="card"><div class="ic">04</div><h3>Tamper-evident audit</h3><p>Every event stores the previous hash and its own SHA-256. <code>Verify()</code> recomputes the chain; any edit, deletion or reordering breaks it.</p></div></div>
+  <h3 style="margin:34px 0 14px">The flow, step by step</h3><div class="flow" role="list"><div class="node"><div class="n">01</div><b>Customer e-mail</b><small>free text, any wording</small></div><div class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="node"><div class="n">02</div><b>Extraction</b><small>quantity, item and site, or a refusal with a reason</small></div><div class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="node"><div class="n">03</div><b>BC lookup + rules</b><small>customer, item, stock, backorder</small></div><div class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="node hl"><div class="n">04</div><b>Proposal</b><small>pending approval, explained in plain language</small></div><div class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="node"><div class="n">05</div><b>Human approval</b><small>sales order created, audit event appended</small></div></div><p class="flow-note">Replace the deterministic extractor with Azure OpenAI or Copilot Studio and the rest of the flow stays the same: the model proposes, the rules and the person decide.</p>
+</div></section>
+<section id="screens"><div class="wrap">
+  <p class="eyebrow">Screens</p><h2>What it looks like</h2>
+  <p class="sub">The real Blazor dashboard and API, run locally with <code>scripts/run-local.sh</code> and captured with Playwright.</p>
+  <div class="frame" style="margin-bottom:18px"><div class="bar"><i></i><i></i><i></i><b>Recorded local demo · 12 s</b></div><video controls preload="metadata" playsinline poster="img/docs-screenshots-local-overview.webp" src="img/docs-screenshots-local-demo.mp4"></video></div><div class="gallery"><figure data-zoom="Approved — Sales order SO-1001 with the approver recorded; the backorder stays visible."><div class="frame"><div class="bar"><i></i><i></i><i></i><b>localhost:5058 · Operations Centre</b></div><img src="img/business-central-agentic-operations-shots-approved.webp" alt="Approved" width="1600" height="1000" loading="lazy" decoding="async"></div><figcaption><b>Approved</b> Sales order SO-1001 with the approver recorded; the backorder stays visible.</figcaption></figure><figure data-zoom="On a phone — The same dashboard at 390 pixels."><div class="frame"><img src="img/business-central-agentic-operations-shots-mobile.webp" alt="On a phone" width="1170" height="2532" loading="lazy" decoding="async"></div><figcaption><b>On a phone</b> The same dashboard at 390 pixels.</figcaption></figure></div>
+</div></section>
+<section id="evidence"><div class="wrap">
+  <p class="eyebrow">Evidence</p><h2>What is real, and what is not</h2>
+  <p class="sub">Building this page turned up eleven issues in the original code, from silently ordering the wrong product to a 500 on large numbers. All are fixed and covered by checks that run in CI.</p>
+  <div class="metrics"><div class="metric"><div class="v">9</div><div class="l">shared parity cases</div><div class="s">checked against the C# code and the browser port</div></div><div class="metric"><div class="v">1</div><div class="l">sales order per approval</div><div class="s">even with two simultaneous approvals</div></div><div class="metric"><div class="v">0</div><div class="l">paid services to run it</div><div class="s">no Azure, BC licence or AI key needed locally</div></div></div>
+  <div class="honest" style="margin-top:18px">
+      <div class="card real"><h3><span class="pill ok">REAL</span> Built and verified</h3><ul><li>Layered .NET 10 solution: Domain, Application, Infrastructure, API and a Blazor dashboard</li><li>Deterministic extraction with refusals, inventory and backorder rules, explicit approval</li><li>SHA-256 hash-chained audit trail with verification and tamper tests</li><li>Was deployed to Azure Container Apps; hosting was retired on 12 October 2026 to stop costs (documented)</li></ul></div>
+      <div class="card sim"><h3><span class="pill warn">SIMULATED</span> Mocked or not built yet</h3><ul><li>Business Central is a seeded in-memory adapter: one customer, two items</li><li>The extractor is rule-based; an LLM (Azure OpenAI, Copilot Studio) is the planned replacement</li><li>Proposals and audit events live in memory and reset when the API stops</li><li>No real customer data and no sandbox work presented as production experience</li></ul></div></div>
+</div></section>
+<section id="run"><div class="wrap two">
+  <div><p class="eyebrow">Run it yourself</p><h2>Run it locally</h2>
+  <p class="sub">Requires the .NET 10 SDK and curl. No Azure account, Business Central licence or AI key.</p>
+  <div class="code"><button class="copy" type="button">Copy</button><pre><code>git clone https://github.com/phlppgdfry/business-central-agentic-operations
+cd business-central-agentic-operations
+bash scripts/run-local.sh
+<span class="c"># Dashboard: http://localhost:5058 · API: http://localhost:5057</span>
+
+<span class="c"># checks, as in CI</span>
+dotnet run --project tests/AgenticOperations.Tests --configuration Release
+node scripts/check-browser-port.mjs</code></pre></div></div>
+  <div><p class="eyebrow">Go deeper</p><h2>Read the source</h2>
+  <div class="links"><a href="https://github.com/phlppgdfry/business-central-agentic-operations"><span>Repository</span><span>github</span></a><a href="https://github.com/phlppgdfry/business-central-agentic-operations/blob/HEAD/docs/business-process.md"><span>Business process</span><span>docs</span></a><a href="https://github.com/phlppgdfry/business-central-agentic-operations/blob/HEAD/docs/requirements.md"><span>Requirements</span><span>docs</span></a><a href="https://github.com/phlppgdfry/business-central-agentic-operations/blob/HEAD/docs/architecture.md"><span>Architecture</span><span>docs</span></a><a href="https://github.com/phlppgdfry/business-central-agentic-operations/blob/HEAD/docs/azure-retirement.md"><span>Azure retirement record</span><span>ops</span></a><a href="https://github.com/phlppgdfry/business-central-agentic-operations/blob/HEAD/tests/parity/extraction-cases.json"><span>Shared parity cases</span><span>json</span></a></div></div>
+</div></section></main>
+<footer><div class="wrap">
+  <span>BC Agentic Operations · A portfolio project by Philippe Godfroy</span>
+  <span><a href="https://www.philippegodfroy.com/work">More projects</a> · <a href="https://github.com/phlppgdfry/business-central-agentic-operations">Source</a></span>
+</div></footer>
+<script src="assets/showcase.js"></script>
+<script src="assets/demo.js" type="module"></script>
+</body></html>
