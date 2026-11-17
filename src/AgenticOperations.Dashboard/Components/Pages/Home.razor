@@ -22,7 +22,7 @@
         @if (!loaded) { <p class="empty">Loading operations data…</p> }
         else if (proposals.Count == 0) { <p class="empty">No requests yet. Create the demo request to walk through the approval flow.</p> }
         else { <div class="proposal-list">@foreach (var proposal in proposals) { <article class="proposal">
-            <div class="proposal-main"><div class="status @proposal.Status.ToLowerInvariant()">@proposal.Status</div><h3>@proposal.Customer.Name</h3><p>@proposal.Item.Description · <strong>@proposal.Request.Quantity units</strong> requested for @proposal.Request.RequestedSite</p><p class="explanation">@proposal.Explanation</p></div>
+            <div class="proposal-main"><div class="status @proposal.Status.ToLowerInvariant()">@(proposal.Status == "PendingApproval" ? "Pending approval" : proposal.Status)</div><h3>@proposal.Customer.Name</h3><p>@proposal.Item.Description · <strong>@proposal.Request.Quantity units</strong> requested for @proposal.Request.RequestedSite</p><p class="explanation">@proposal.Explanation</p></div>
             <div class="stock"><span>Available</span><strong>@proposal.Inventory.AvailableQuantity</strong>@if (proposal.Request.Quantity > proposal.Inventory.AvailableQuantity) { <small>@(proposal.Request.Quantity - proposal.Inventory.AvailableQuantity) backorder</small> }</div>
             <div class="action">@if (proposal.Status == "PendingApproval") { <button class="primary" disabled="@isBusy" @onclick="() => ApproveAsync(proposal.Id)">Approve order</button> } else { <span class="order-number">@proposal.SalesOrder?.Number</span><small>Approved by @proposal.ApprovedBy</small> }</div>
         </article>}</div> }
