@@ -1,7 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/AgenticOperations.Application/AgenticOperations.Application.csproj" />
     <ProjectReference Include="../../src/AgenticOperations.Infrastructure/AgenticOperations.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\parity\extraction-cases.json" Link="parity\extraction-cases.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

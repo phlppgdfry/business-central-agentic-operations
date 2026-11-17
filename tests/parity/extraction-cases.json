@@ -1,0 +1,77 @@
+{
+  "description": "Shared fixtures: OrderRequestExtractor + OrderProposalService (C#) and site/assets/rules.js (browser port) must agree. Stock is the seeded demo stock (PROD-X 32, PROD-Y 120).",
+  "cases": [
+    {
+      "name": "README example",
+      "request": "Please order another 40 units of product X for our Antwerp site.",
+      "expected": {
+        "item": "PROD-X",
+        "quantity": 40,
+        "available": 32,
+        "backorder": 8
+      }
+    },
+    {
+      "name": "Enough stock",
+      "request": "Can we get 25 pcs of Product Y delivered to Antwerp?",
+      "expected": {
+        "item": "PROD-Y",
+        "quantity": 25,
+        "available": 120,
+        "backorder": 0
+      }
+    },
+    {
+      "name": "Site number before quantity",
+      "request": "For Antwerp site 2, please order 40 units of PROD-X.",
+      "expected": {
+        "item": "PROD-X",
+        "quantity": 40,
+        "available": 32,
+        "backorder": 8
+      }
+    },
+    {
+      "name": "Unknown product is refused",
+      "request": "Please order 10 units of product Z for Antwerp.",
+      "expected": {
+        "error": "No known item"
+      }
+    },
+    {
+      "name": "Two products need two proposals",
+      "request": "Order 10 units of product X and product Y for Antwerp.",
+      "expected": {
+        "error": "More than one item"
+      }
+    },
+    {
+      "name": "Zero quantity",
+      "request": "Please order 0 units of product X for Antwerp.",
+      "expected": {
+        "error": "at least 1"
+      }
+    },
+    {
+      "name": "No quantity",
+      "request": "Please order some product X for Antwerp.",
+      "expected": {
+        "error": "No quantity"
+      }
+    },
+    {
+      "name": "Absurd number is a 400, not a crash",
+      "request": "Order 99999999999 units of product X for Antwerp.",
+      "expected": {
+        "error": "No quantity"
+      }
+    },
+    {
+      "name": "Unknown site",
+      "request": "Please order 5 units of product X for our Ghent site.",
+      "expected": {
+        "error": "No known customer site"
+      }
+    }
+  ]
+}

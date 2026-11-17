@@ -1,9 +1,12 @@
-using AgenticOperations.Domain;
+﻿using AgenticOperations.Domain;
 
 namespace AgenticOperations.Application;
 
 public sealed class OrderProposalService(IBusinessCentralClient businessCentral, IOrderRequestExtractor extractor, IProposalRepository proposals, IAuditTrail audit)
 {
+    // One approval at a time: two simultaneous approvals must never create two sales orders.
+    private readonly SemaphoreSlim _approvalGate = new(1, 1);
+
     public async Task<OrderProposal> CreateAsync(CreateProposalCommand command, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(command.RequestText)) throw new ArgumentException("A customer request is required.");
@@ -29,6 +32,19 @@ public sealed class OrderProposalService(IBusinessCentralClient businessCentral,
     public async Task<OrderProposal> ApproveAsync(Guid id, string approvedBy, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(approvedBy)) throw new ArgumentException("An approver is required.");
+        await _approvalGate.WaitAsync(cancellationToken);
+        try
+        {
+            return await ApproveOnceAsync(id, approvedBy, cancellationToken);
+        }
+        finally
+        {
+            _approvalGate.Release();
+        }
+    }
+
+    private async Task<OrderProposal> ApproveOnceAsync(Guid id, string approvedBy, CancellationToken cancellationToken)
+    {
         var proposal = proposals.Get(id) ?? throw new KeyNotFoundException("Order proposal was not found.");
         if (proposal.Status != ProposalStatus.PendingApproval) throw new InvalidOperationException("Only pending proposals can be approved.");
         var backorder = Math.Max(0, proposal.Request.Quantity - proposal.Inventory.AvailableQuantity);

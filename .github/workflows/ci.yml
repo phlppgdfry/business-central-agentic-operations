@@ -14,3 +14,8 @@ jobs:
           dotnet-version: 10.0.x
       - run: dotnet build --configuration Release
       - run: dotnet run --project tests/AgenticOperations.Tests --configuration Release
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Browser port matches the C# rules
+        run: node scripts/check-browser-port.mjs
